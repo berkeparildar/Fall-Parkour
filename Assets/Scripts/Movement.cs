@@ -1,30 +1,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Photon.Pun;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-
     private float _speed = 5.0f;
-
     private PhotonView _view;
-    // Start is called before the first frame update
+    private Vector3 currenJumpVelocity;
+    private bool isJumping;
+    private CharacterController _controller;
     void Start()
     {
         _view = GetComponent<PhotonView>();
         _rigidbody = GetComponent<Rigidbody>();
+        _controller = GetComponent<CharacterController>();
+        if (_view.IsMine)
+        {
+            transform.GetChild(0).GetComponent<CinemachineVirtualCamera>().enabled = true;
+        }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void FixedUpdate()
+    
+    private void Update()
     {
         if (_view.IsMine)
         {
@@ -34,12 +34,32 @@ public class Movement : MonoBehaviour
 
     private void Move()
     {
-        var horizontal = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
-        var movementVector = new Vector3(horizontal * _speed, _rigidbody.velocity.y, vertical * _speed);
-        _rigidbody.velocity = movementVector;
-    }
+        var moveVelocity = Vector3.zero;
+        moveVelocity.x = Input.GetAxis("Horizontal") * _speed;
+        moveVelocity.z = Input.GetAxis("Vertical") * _speed;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isJumping)
+            {
+                isJumping = true;
+                currenJumpVelocity = Vector3.up * 5;
+            }
+        }
 
+        if (isJumping)
+        {
+            _controller.Move((moveVelocity + currenJumpVelocity) * Time.deltaTime);
+            currenJumpVelocity += Physics.gravity * Time.deltaTime;
+            if (_controller.isGrounded)
+            {
+                isJumping = false;
+            }
+        }
+        else
+        {
+            _controller.SimpleMove(moveVelocity);
+        }
+    }
     /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

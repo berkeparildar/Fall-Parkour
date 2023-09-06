@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     private bool _isConnected;
-    private bool _joinedRoom;
-    private bool _loadedGame;
+    public bool joinedRoom;
+    public bool loadedGame;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,9 +38,13 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         var roomCount = PhotonNetwork.CountOfRooms;
+        Debug.Log(roomCount);
         if (roomCount == 0)
         {
-            PhotonNetwork.CreateRoom("random");
+            RoomOptions opt = new RoomOptions();
+            opt.MaxPlayers = 2;
+            opt.IsOpen = true;
+            PhotonNetwork.CreateRoom("random", opt);
             SpawnPlayers.IsFirstPlayer = true;
         }
         else
@@ -52,15 +56,15 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (!_loadedGame && _joinedRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        if (!loadedGame && joinedRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            _loadedGame = true;
+            loadedGame = true;
             PhotonNetwork.LoadLevel("Game");
         }
     }
 
     public override void OnJoinedRoom()
     {
-        _joinedRoom = true;
+        joinedRoom = true;
     }
 }
