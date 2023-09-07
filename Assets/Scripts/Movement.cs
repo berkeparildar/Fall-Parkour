@@ -4,27 +4,42 @@ using System.Collections.Generic;
 using Cinemachine;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Movement : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
-    private float _speed = 5.0f;
     private PhotonView _view;
-    private Vector3 currenJumpVelocity;
-    private bool isJumping;
-    private CharacterController _controller;
+    private Rigidbody _rigidbody;
+    public float _speed = 5f;
+    public float jumpForce = 5f;
+    private bool isGrounded;
+    private float _verticalInput;
+    private Animator _animator;
+    private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
+
     void Start()
     {
         _view = GetComponent<PhotonView>();
         _rigidbody = GetComponent<Rigidbody>();
-        _controller = GetComponent<CharacterController>();
+        var childCount = transform.GetChild(0).childCount;
+        var modelChoice = Random.Range(0, childCount);
+        var model = transform.GetChild(0).GetChild(modelChoice).gameObject;
+        model.SetActive(true);
+        _animator = model.GetComponent<Animator>();
         if (_view.IsMine)
         {
-            transform.GetChild(0).GetComponent<CinemachineVirtualCamera>().enabled = true;
+            transform.GetChild(1).GetComponent<CinemachineVirtualCamera>().enabled = true;
         }
     }
-    
+
     private void Update()
+    {
+        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red);
+        _animator.SetFloat(VerticalInput, _verticalInput);
+        _animator.SetBool("jump", !isGrounded);
+    }
+
+    private void FixedUpdate()
     {
         if (_view.IsMine)
         {
@@ -34,48 +49,14 @@ public class Movement : MonoBehaviour
 
     private void Move()
     {
-        var moveVelocity = Vector3.zero;
-        moveVelocity.x = Input.GetAxis("Horizontal") * _speed;
-        moveVelocity.z = Input.GetAxis("Vertical") * _speed;
-        if (Input.GetKeyDown(KeyCode.Space))
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.6f);
+        _verticalInput = Input.GetAxis("Vertical");
+        var horizontal = Input.GetAxis("Horizontal");
+        var movementVector = new Vector3(horizontal * _speed, _rigidbody.velocity.y, _verticalInput * _speed);
+        _rigidbody.velocity = movementVector;
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            if (!isJumping)
-            {
-                isJumping = true;
-                currenJumpVelocity = Vector3.up * 5;
-            }
-        }
-
-        if (isJumping)
-        {
-            _controller.Move((moveVelocity + currenJumpVelocity) * Time.deltaTime);
-            currenJumpVelocity += Physics.gravity * Time.deltaTime;
-            if (_controller.isGrounded)
-            {
-                isJumping = false;
-            }
-        }
-        else
-        {
-            _controller.SimpleMove(moveVelocity);
+            _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(_rigidbody.position);
-            stream.SendNext(_rigidbody.rotation);
-            stream.SendNext(_rigidbody.velocity);
-        }
-        else
-        {
-            _rigidbody.position = (Vector3) stream.ReceiveNext();
-            _rigidbody.rotation = (Quaternion) stream.ReceiveNext();
-            _rigidbody.velocity = (Vector3) stream.ReceiveNext();
-
-            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.timestamp));
-            _rigidbody.position += _rigidbody.velocity * lag;
-        }
-    }*/
 }

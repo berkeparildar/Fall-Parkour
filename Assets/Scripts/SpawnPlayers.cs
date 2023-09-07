@@ -14,11 +14,11 @@ public class SpawnPlayers : MonoBehaviour
     {
         if (IsFirstPlayer)
         {
-            _spawnPos = new Vector3(10, 2, 2);
+            _spawnPos = new Vector3(10, 22, 2);
         }
         else
         {
-            _spawnPos = new Vector3(0, 2, 2);
+            _spawnPos = new Vector3(0, 22, 2);
         }
         PhotonNetwork.Instantiate(playerPrefab.name, _spawnPos, Quaternion.identity);
     }
