@@ -1,62 +1,93 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
-    private PhotonView _view;
-    private Rigidbody _rigidbody;
-    public float _speed = 5f;
-    public float jumpForce = 5f;
-    private bool isGrounded;
-    private float _verticalInput;
-    private Animator _animator;
+    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private bool isJumping;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private float turnAngle = 30;
+    [SerializeField] private GameObject model;
+    [SerializeField] private Animator modelAnimator; 
+    [SerializeField] private PhotonView view;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float rayLength = 0.6f;
+    [SerializeField] private bool justJumped;
+    [SerializeField] private bool noMovement;
     private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
+    private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
+    private static readonly int Jump = Animator.StringToHash("jump");
+    private static readonly int OnGround = Animator.StringToHash("onGround");
 
-    void Start()
+    private void Start()
     {
-        _view = GetComponent<PhotonView>();
-        _rigidbody = GetComponent<Rigidbody>();
-        var childCount = transform.GetChild(0).childCount;
-        var modelChoice = Random.Range(0, childCount);
-        var model = transform.GetChild(0).GetChild(modelChoice).gameObject;
+        noMovement = true;
+        view = GetComponent<PhotonView>();
+        rb = GetComponent<Rigidbody>();
+        model = transform.GetChild(0).gameObject;
         model.SetActive(true);
-        _animator = model.GetComponent<Animator>();
-        if (_view.IsMine)
+        modelAnimator = model.GetComponent<Animator>();
+        if (view.IsMine)
         {
             transform.GetChild(1).GetComponent<CinemachineVirtualCamera>().enabled = true;
         }
     }
-
-    private void Update()
-    {
-        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red);
-        _animator.SetFloat(VerticalInput, _verticalInput);
-        _animator.SetBool("jump", !isGrounded);
-    }
-
+    
     private void FixedUpdate()
     {
-        if (_view.IsMine)
+        Debug.DrawRay(transform.position, Vector3.down * rayLength);
+        if (view.IsMine && !noMovement)
         {
             Move();
         }
     }
-
+    
     private void Move()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.6f);
-        _verticalInput = Input.GetAxis("Vertical");
-        var horizontal = Input.GetAxis("Horizontal");
-        var movementVector = new Vector3(horizontal * _speed, _rigidbody.velocity.y, _verticalInput * _speed);
-        _rigidbody.velocity = movementVector;
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        var horizontalInput = Input.GetAxis("Horizontal") * speed;
+        var verticalInput = Input.GetAxis("Vertical") * speed;
+        modelAnimator.SetFloat(VerticalInput, verticalInput);
+        modelAnimator.SetFloat(HorizontalInput, horizontalInput);
+        var moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+        if (moveDirection.magnitude > 5)
         {
-            _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            moveDirection.Normalize();
+            moveDirection *= 5;
         }
+
+        moveDirection.y = rb.velocity.y;
+        rb.velocity = moveDirection;
+        transform.Rotate(Vector3.up, turnAngle * Input.GetAxis("Horizontal") * Time.deltaTime);
+        if (Physics.Raycast(transform.position, Vector3.down, rayLength))
+        {
+            isJumping = false;
+            modelAnimator.SetBool(OnGround, !isJumping);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isJumping)
+            {
+                isJumping = true;
+                justJumped = true;
+                modelAnimator.SetBool(Jump, justJumped);
+                justJumped = false;
+                modelAnimator.SetBool(Jump, justJumped);
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
+        }
+    }
+
+    public bool GetMovementStatus()
+    {
+        return noMovement;
+    }
+    
+    public void SetMovementStatus(bool status)
+    {
+        noMovement = status;
     }
 }

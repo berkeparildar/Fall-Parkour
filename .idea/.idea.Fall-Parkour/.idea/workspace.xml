@@ -11,6 +11,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/PizzaBar.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Animal.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DoorSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Movement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpawnPlayers.cs" root0="FORCE_HIGHLIGHTING" />
@@ -105,6 +107,9 @@
       <workItem from="1693992162452" duration="15013000" />
       <workItem from="1694041715303" duration="693000" />
       <workItem from="1694042694843" duration="47000" />
+      <workItem from="1694132530195" duration="2641000" />
+      <workItem from="1694166269495" duration="19864000" />
+      <workItem from="1694258655078" duration="16816000" />
     </task>
     <servers />
   </component>
