@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float turnAngle = 30;
     [SerializeField] private GameObject model;
     [SerializeField] private Animator modelAnimator; 
-    [SerializeField] private PhotonView view;
+    //[SerializeField] private PhotonView view;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float rayLength = 0.6f;
     [SerializeField] private bool justJumped;
@@ -26,24 +26,24 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         noMovement = true;
-        view = GetComponent<PhotonView>();
+        //view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
         model = transform.GetChild(0).gameObject;
         model.SetActive(true);
         modelAnimator = model.GetComponent<Animator>();
-        if (view.IsMine)
-        {
+        //if (view.IsMine)
+        //{
             transform.GetChild(1).GetComponent<CinemachineVirtualCamera>().enabled = true;
-        }
+        //}
     }
     
     private void FixedUpdate()
     {
         Debug.DrawRay(transform.position, Vector3.down * rayLength);
-        if (view.IsMine && !noMovement)
-        {
+        //if (view.IsMine && !noMovement)
+        //{
             Move();
-        }
+        //}
     }
     
     private void Move()

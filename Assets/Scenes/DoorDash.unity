@@ -6562,7 +6562,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -6588,8 +6588,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923361673}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.34202015, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 35.799995, z: 61.6}
+  m_LocalRotation: {x: -0.08688699, y: -0.07815984, z: 0.006838017, w: -0.9931238}
+  m_LocalPosition: {x: -20.961266, y: 40.267483, z: -0.7354126}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8033,9 +8033,12 @@ MonoBehaviour:
   playableDirector: {fileID: 1622852313}
   sentEvent: 0
   countDownPrefab: {fileID: 9041857068938710087, guid: f2802f9ee90791941a5b87539a28674b, type: 3}
+  countDownAnimator: {fileID: 0}
+  animatorSet: 0
   initializedCountdown: 0
   readyPlayers: 0
   stopped: 0
+  start: 0
 --- !u!4 &1100391636
 Transform:
   m_ObjectHideFlags: 0
@@ -13825,8 +13828,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SpawnPlayers, Assembly-CSharp
+      - m_Target: {fileID: 1771036007}
+        m_TargetAssemblyTypeName: SpawnManager, Assembly-CSharp
         m_MethodName: GoToMenu
         m_Mode: 1
         m_Arguments:

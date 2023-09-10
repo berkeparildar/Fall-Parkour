@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 
@@ -53,7 +54,11 @@ public class SpawnManager : MonoBehaviour
         {
             spawnPosition = new Vector3(0, 22, 2);
         }
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition, Quaternion.identity);
+        var player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition, Quaternion.identity);
+        if (SceneManager.GetActiveScene().name == "DoorDash")
+        {
+            player.GetComponent<PlayerEventManager>().SetFinishLine(134f);
+        }
     }
 
     private void DoorDashInitialize()

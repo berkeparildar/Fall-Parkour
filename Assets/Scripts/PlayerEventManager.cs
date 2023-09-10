@@ -12,6 +12,7 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
     [SerializeField] private Animator modelAnimator;
     [SerializeField] private Movement movement;
     [SerializeField] private PhotonView view;
+    [SerializeField] private float finishLine;
     private static readonly int Win = Animator.StringToHash("win");
     private static readonly int Lose = Animator.StringToHash("lose");
 
@@ -46,7 +47,7 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
         {
             if (view.IsMine)
             {
-                if (transform.position.z > 130)
+                if (transform.position.z >= finishLine)
                 {
                     canvasAnimator.SetTrigger(Win);
                     rb.isKinematic = true;
@@ -66,7 +67,7 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
     
     void CheckIfFinished()
     {
-        if (movement.GetMovementStatus() == false && transform.position.z >= 134)
+        if (movement.GetMovementStatus() == false && transform.position.z >= finishLine)
         {
             movement.SetMovementStatus(true);
             byte eventCode = 2;
@@ -75,5 +76,10 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
             SendOptions sendOptions = SendOptions.SendReliable;
             PhotonNetwork.RaiseEvent(eventCode, null, eventOptions, sendOptions);
         }
+    }
+
+    public void SetFinishLine(float number)
+    {
+        finishLine = number;
     }
 }
