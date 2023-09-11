@@ -9,8 +9,6 @@ using UnityEngine.Timeline;
 
 public class MatchStartSync : MonoBehaviour, IOnEventCallback
 {
-    [SerializeField] private GameObject cooldownCanvas;
-    [SerializeField] private TimelineAsset timelineAsset;
     [SerializeField] private PlayableDirector playableDirector;
     [SerializeField] private bool sentEvent;
     [SerializeField] private GameObject countDownPrefab;

@@ -63,7 +63,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         if (!loadedGame && joinedRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             loadedGame = true;
-            PhotonNetwork.LoadLevel("DoorDash");
+            PhotonNetwork.LoadLevel("BigFans");
         }
     }
 

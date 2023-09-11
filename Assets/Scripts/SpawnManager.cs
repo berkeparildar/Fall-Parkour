@@ -18,29 +18,20 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private Vector3[] thirdDoorRow;
     [SerializeField] private Vector3[] fourthDoorRow;
     [SerializeField] private Vector3[] fifthDoorRow;
-    [SerializeField] private bool sentEvent;
-
-    private void OnEnable()
-    {
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    private void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
-
+    [SerializeField] private Vector3 playerOneSpawnPosition;
+    [SerializeField] private Vector3 playerTwoSpawnPosition;
+    
+    
     private void Start()
     {
         SpawnPlayers();
-        DoorDashInitialize();
-    }
-
-    private void Update()
-    {
-        if (!sentEvent)
+        if (SceneManager.GetActiveScene().name == "DoorDash")
         {
-            
+            DoorDashInitialize();
+        }
+        if (SceneManager.GetActiveScene().name == "BigFans")
+        {
+            BigsFansInitialize();
         }
     }
     
@@ -48,11 +39,11 @@ public class SpawnManager : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            spawnPosition = new Vector3(10, 22, 2);
+            spawnPosition = playerOneSpawnPosition;
         }
         else
         {
-            spawnPosition = new Vector3(0, 22, 2);
+            spawnPosition = playerTwoSpawnPosition;
         }
         var player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition, Quaternion.identity);
         if (SceneManager.GetActiveScene().name == "DoorDash")
@@ -70,6 +61,14 @@ public class SpawnManager : MonoBehaviour
             SpawnDoor(thirdDoorRow);
             SpawnDoor(fourthDoorRow);
             SpawnDoor(fifthDoorRow);
+        }
+    }
+    
+    private void BigsFansInitialize()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("AllFans", Vector3.zero, Quaternion.identity);
         }
     }
 

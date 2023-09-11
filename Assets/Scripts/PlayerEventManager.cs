@@ -18,11 +18,7 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         canvasAnimator = GameObject.Find("Canvas").GetComponent<Animator>();
-        modelAnimator = transform.GetChild(0).GetComponent<Animator>();
-        movement = GetComponent<Movement>();
-        view = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame

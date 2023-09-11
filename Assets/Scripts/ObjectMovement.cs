@@ -11,6 +11,7 @@ public class ObjectMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()

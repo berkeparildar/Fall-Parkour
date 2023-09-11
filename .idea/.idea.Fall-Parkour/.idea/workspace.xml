@@ -110,7 +110,8 @@
       <workItem from="1694132530195" duration="2641000" />
       <workItem from="1694166269495" duration="19864000" />
       <workItem from="1694258655078" duration="18403000" />
-      <workItem from="1694364616414" duration="4136000" />
+      <workItem from="1694364616414" duration="12520000" />
+      <workItem from="1694446573545" duration="5653000" />
     </task>
     <servers />
   </component>
@@ -121,5 +122,24 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/PlayerEventManager.cs</url>
+          <line>61</line>
+          <properties documentPath="D:\Projects\Fall-Parkour\Assets\Scripts\PlayerEventManager.cs" initialLine="61" containingFunctionPresentation="Method 'OnEvent'">
+            <startOffsets>
+              <option value="1760" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1761" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

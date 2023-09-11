@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7596234639120758899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 209611150785852651}
+  - component: {fileID: 1670797310424494907}
+  m_Layer: 0
+  m_Name: SpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &209611150785852651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7596234639120758899}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1670797310424494907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7596234639120758899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb1d16afa6adc0b4c937681bad1a7f81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 5247676373256575232, guid: e594f9e9709f52c4e940a5a7562e3d89, type: 3}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  firstDoorRow:
+  - {x: -12.6, y: 20.32, z: 14.5}
+  - {x: -8.4, y: 20.32, z: 14.5}
+  - {x: -4.2, y: 20.32, z: 14.5}
+  - {x: 0, y: 20.32, z: 14.5}
+  - {x: 4.2, y: 20.32, z: 14.5}
+  - {x: 8.4, y: 20.32, z: 14.5}
+  - {x: 12.6, y: 20.32, z: 14.5}
+  secondDoorRow:
+  - {x: -10.5, y: 20.32, z: 39.5}
+  - {x: -6.3, y: 20.32, z: 39.5}
+  - {x: -2.1, y: 20.32, z: 39.5}
+  - {x: 2.1, y: 20.32, z: 39.5}
+  - {x: 6.3, y: 20.32, z: 39.5}
+  - {x: 10.5, y: 20.32, z: 39.5}
+  thirdDoorRow:
+  - {x: -8.4, y: 20.32, z: 64.5}
+  - {x: -4.2, y: 20.32, z: 64.5}
+  - {x: 0, y: 20.32, z: 64.5}
+  - {x: 4.2, y: 20.32, z: 64.5}
+  - {x: 8.4, y: 20.32, z: 64.5}
+  fourthDoorRow:
+  - {x: -6.3, y: 20.32, z: 89.5}
+  - {x: -2.1, y: 20.32, z: 89.5}
+  - {x: 2.1, y: 20.32, z: 89.5}
+  - {x: 6.3, y: 20.32, z: 89.5}
+  fifthDoorRow:
+  - {x: -4.2, y: 20.32, z: 114.5}
+  - {x: 0, y: 20.32, z: 114.5}
+  - {x: 4.2, y: 20.32, z: 114.5}
+  playerOneSpawnPosition: {x: 0, y: 0, z: 0}
+  playerTwoSpawnPosition: {x: 0, y: 0, z: 0}
