@@ -29,9 +29,13 @@ public class SpawnManager : MonoBehaviour
         {
             DoorDashInitialize();
         }
-        if (SceneManager.GetActiveScene().name == "BigFans")
+        else if (SceneManager.GetActiveScene().name == "BigFans")
         {
             BigsFansInitialize();
+        }
+        else if (SceneManager.GetActiveScene().name == "SlimeClimb")
+        {
+            SlimeInitialize();
         }
     }
     
@@ -100,7 +104,17 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    
+    private void SlimeInitialize()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("Slime", new Vector3(0, -36, 40), Quaternion.identity);
+            PhotonNetwork.Instantiate("Hammers", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("Pendulums", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("Tubes", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("Cubes", Vector3.zero, Quaternion.identity);
+        }
+    }
     public void GoToMenu()
     {
         PhotonNetwork.LoadLevel("Menu");

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fan
+  - Slippery
+  - Slime
   layers:
   - Default
   - TransparentFX

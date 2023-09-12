@@ -6,6 +6,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
@@ -16,6 +17,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public TextMeshProUGUI roomcount;
     public TextMeshProUGUI room;
     public TextMeshProUGUI joined;
+    private string[] levels = new[] { "SlimeClimb", "BigFans", "DoorDash" };
     
     // Start is called before the first frame update
     void Start()
@@ -43,7 +45,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
             {
                 room.text = ("No rooms, so creating a room");
                 Debug.Log("No rooms, so creating a room");
-                PhotonNetwork.CreateRoom("random");
+                PhotonNetwork.CreateRoom(levels[Random.Range(0, levels.Length)]);
             }
             else
             {
@@ -63,6 +65,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         if (!loadedGame && joinedRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             loadedGame = true;
+            //PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.Name);
             PhotonNetwork.LoadLevel("BigFans");
         }
     }

@@ -253,17 +253,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  isJumping: 0
   rb: {fileID: 1697418399621981518}
-  turnAngle: 30
+  maxVelocityDelta: 5
+  turnSpeed: 5
   model: {fileID: 4169721346648911258}
   modelAnimator: {fileID: 6119013136607650166}
   view: {fileID: 467727114908797276}
   jumpForce: 7
-  rayLength: 0.54
-  justJumped: 0
+  rayLength: 0.55
   noMovement: 1
   facing: 0
+  movementVector: {x: 0, y: 0, z: 0}
+  vCamera: {fileID: 0}
 --- !u!114 &467727114908797276
 MonoBehaviour:
   m_ObjectHideFlags: 0

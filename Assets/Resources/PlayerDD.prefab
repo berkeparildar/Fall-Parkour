@@ -251,17 +251,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  isJumping: 0
   rb: {fileID: 1697418399621981518}
-  turnAngle: 30
+  maxVelocityDelta: 5
+  turnSpeed: 5
   model: {fileID: 4169721346648911258}
   modelAnimator: {fileID: 6119013136607650166}
   view: {fileID: 467727114908797276}
   jumpForce: 7
-  rayLength: 0.54
-  justJumped: 0
+  rayLength: 0.55
   noMovement: 1
   facing: 0
+  movementVector: {x: 0, y: 0, z: 0}
+  vCamera: {fileID: 0}
 --- !u!114 &467727114908797276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +284,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2404849201537254084}
   - {fileID: 4271621839145504780}
+  - {fileID: 5514807223593962191}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -436,6 +438,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6705402075998324148, guid: d941199d4a58fcb45adc75ea8e37c42c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4271621839145504780}
+    - targetCorrespondingSourceObject: {fileID: 6705402075998324148, guid: d941199d4a58fcb45adc75ea8e37c42c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5514807223593962191}
   m_SourcePrefab: {fileID: 100100000, guid: d941199d4a58fcb45adc75ea8e37c42c, type: 3}
 --- !u!4 &3645105159181137696 stripped
 Transform:
@@ -495,3 +500,19 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &5514807223593962191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169721346648911258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1

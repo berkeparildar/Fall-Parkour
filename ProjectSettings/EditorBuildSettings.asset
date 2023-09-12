@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BigFans.unity
     guid: 5cb4a23cd1600514b91ea2d5e02dfeac
+  - enabled: 1
+    path: Assets/Scenes/SlimeClimb.unity
+    guid: eb1771f2ce07fcd469bbd6a8bf9d1a9f
   m_configObjects: {}

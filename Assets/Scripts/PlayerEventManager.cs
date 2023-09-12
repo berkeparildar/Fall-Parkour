@@ -59,6 +59,27 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
                 }
             }
         }
+        else if (photonEvent.Code == 9)
+        {
+            if (view.IsMine)
+            {
+                var content = photonEvent.CustomData;
+                if (view.ViewID == (int)content)
+                {
+                    movement.SetMovementStatus(true);
+                    Debug.Log("You Lost!!");
+                    canvasAnimator.SetTrigger(Lose);
+                    rb.isKinematic = true;
+                    modelAnimator.enabled = false;
+                }
+                else
+                {
+                    canvasAnimator.SetTrigger(Win);
+                    rb.isKinematic = true;
+                    modelAnimator.enabled = false;
+                }
+            }
+        }
     }
     
     void CheckIfFinished()

@@ -11,11 +11,9 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/PizzaBar.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Animal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/CubeObstacle.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DoorSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Movement.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpawnPlayers.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -112,7 +110,9 @@
       <workItem from="1694258655078" duration="18403000" />
       <workItem from="1694364616414" duration="12520000" />
       <workItem from="1694446573545" duration="5653000" />
-      <workItem from="1694479551210" duration="2759000" />
+      <workItem from="1694479551210" duration="7039000" />
+      <workItem from="1694519313828" duration="2311000" />
+      <workItem from="1694535850038" duration="6738000" />
     </task>
     <servers />
   </component>
@@ -123,24 +123,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/PlayerEventManager.cs</url>
-          <line>61</line>
-          <properties documentPath="D:\Projects\Fall-Parkour\Assets\Scripts\PlayerEventManager.cs" initialLine="61" containingFunctionPresentation="Method 'OnEvent'">
-            <startOffsets>
-              <option value="1760" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1761" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
