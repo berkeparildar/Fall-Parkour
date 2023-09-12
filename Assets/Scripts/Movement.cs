@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float turnAngle = 30;
     [SerializeField] private GameObject model;
     [SerializeField] private Animator modelAnimator; 
-    [SerializeField] private PhotonView view;
+    //[SerializeField] private PhotonView view;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float rayLength = 0.6f;
     [SerializeField] private bool justJumped;
@@ -23,18 +23,18 @@ public class Movement : MonoBehaviour
 
     private void Start()
     {
-        if (view.IsMine)
-        {
+        //if (view.IsMine)
+        //{
             transform.GetChild(1).GetComponent<CinemachineVirtualCamera>().enabled = true;
-        }
+        //}
     }
 
     private void Update()
     {
-        if (view.IsMine && !noMovement)
-        {
+        //if (view.IsMine && !noMovement)
+        //{
             DemoMove();
-        }
+        //}
     }
 
     private void DemoMove()
@@ -112,40 +112,6 @@ public class Movement : MonoBehaviour
             }
         }
         
-    }
-    
-    private void Move()
-    {
-        var horizontalInput = Input.GetAxis("Horizontal") * speed;
-        var verticalInput = Input.GetAxis("Vertical") * speed;
-        modelAnimator.SetFloat(VerticalInput, verticalInput);
-        modelAnimator.SetFloat(HorizontalInput, horizontalInput);
-        var moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
-        if (moveDirection.magnitude > 5)
-        {
-            moveDirection.Normalize();
-            moveDirection *= 5;
-        }
-
-        moveDirection.y = rb.velocity.y;
-        rb.velocity = moveDirection;
-        transform.Rotate(Vector3.up, turnAngle * Input.GetAxis("Horizontal") * Time.deltaTime);
-        if (Physics.Raycast(transform.position, Vector3.down, rayLength))
-        {
-            isJumping = false;
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!isJumping)
-            {
-                isJumping = true;
-                justJumped = true;
-                modelAnimator.SetBool(Jump, justJumped);
-                justJumped = false;
-                modelAnimator.SetBool(Jump, justJumped);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            }
-        }
     }
 
     public bool GetMovementStatus()
