@@ -29,7 +29,7 @@ public class Slime : MonoBehaviour
     {
         if (game)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos,  Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos,  0.2f *Time.deltaTime);
         }
     }
 

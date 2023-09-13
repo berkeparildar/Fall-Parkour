@@ -70,7 +70,15 @@ public class PlayerEventManager : MonoBehaviour, IOnEventCallback
                         endSound.clip = loseSound;
                         endSound.Play();
                     }
-                    movement.SetMovementStatus(true);
+
+                    if (SceneManager.GetActiveScene().name == "SlimeClimb")
+                    {
+                        surfaceMovement.SetMovementStatus(true);
+                    }
+                    else
+                    {
+                        movement.SetMovementStatus(true);
+                    }
                     Debug.Log("You Lost!!");
                     canvasAnimator.SetTrigger(Lose);
                     rb.isKinematic = true;
