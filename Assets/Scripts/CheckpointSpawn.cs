@@ -1,6 +1,9 @@
 
+using System;
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CheckpointSpawn : MonoBehaviour
 {
@@ -9,7 +12,9 @@ public class CheckpointSpawn : MonoBehaviour
     [SerializeField] private Vector3[] spawnPositionsLeft;
     [SerializeField] private Vector3[] checkPointPositionsLeft;
     [SerializeField] private int currentIndex;
-    
+    [SerializeField] private GameObject checkPointUI;
+    [SerializeField] private bool uiActivated;
+    [SerializeField] private AudioSource checkPointSound;
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -32,8 +37,20 @@ public class CheckpointSpawn : MonoBehaviour
             if (zPos >= arr[i].z)
             {
                 currentIndex = i;
+                if (!uiActivated)
+                {
+                    uiActivated = true;
+                }
             }
         }
+    }
+
+    private IEnumerator CheckPointUI()
+    {
+        checkPointUI.SetActive(true);
+        yield return new WaitForSeconds(1.2f);
+        checkPointUI.SetActive(false);
+        uiActivated = false;
     }
 
     private void CheckFall(Vector3[] arr)
@@ -42,6 +59,15 @@ public class CheckpointSpawn : MonoBehaviour
         if (yPos <= -10)
         {
             transform.position = arr[currentIndex];
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("CheckPoint"))
+        {
+            StartCoroutine(CheckPointUI());
+            checkPointSound.Play();
         }
     }
 }
