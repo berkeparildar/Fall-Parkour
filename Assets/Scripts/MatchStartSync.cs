@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 
 public class MatchStartSync : MonoBehaviour, IOnEventCallback
@@ -71,9 +72,19 @@ public class MatchStartSync : MonoBehaviour, IOnEventCallback
         if (readyPlayers != 4 || start) return;
         start = true;
         var players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var player in players)
+        if (SceneManager.GetActiveScene().name == "SlimeClimb")
         {
-            player.GetComponent<Movement>().SetMovementStatus(false);
+            foreach (var player in players)
+            {
+                player.GetComponent<SurfaceBasedMovement>().SetMovementStatus(false);
+            }
+        }
+        else
+        {
+            foreach (var player in players)
+            {
+                player.GetComponent<Movement>().SetMovementStatus(false);
+            }
         }
     }
 

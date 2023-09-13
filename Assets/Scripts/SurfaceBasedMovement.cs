@@ -1,32 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
 using Cinemachine;
 using Photon.Pun;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class SurfaceBasedMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float turnAngle = 30;
+    [SerializeField] private float maxVelocityDelta;
+    [SerializeField] private float turnSpeed;
     [SerializeField] private GameObject model;
     [SerializeField] private Animator modelAnimator;
-    [SerializeField] private Vector3 movementVector;
     [SerializeField] private PhotonView view;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float rayLength = 0.6f;
     [SerializeField] private bool noMovement;
-    [SerializeField] private AudioSource runAudio;
-    [SerializeField] private AudioSource jumpAudio;
     private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
     private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
     private static readonly int Jump = Animator.StringToHash("jump");
     [SerializeField] private bool facing;
+    [SerializeField] private Vector3 movementVector;
     [SerializeField] private GameObject vCamera;
+    [SerializeField] private AudioSource runAudio;
+    [SerializeField] private AudioSource jumpAudio;
 
     private void Start()
     {
+        vCamera = transform.GetChild(1).gameObject;
         if (view.IsMine)
         {
             vCamera.GetComponent<CinemachineVirtualCamera>().enabled = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (view.IsMine && !noMovement)
+        {
+            Move();
         }
     }
 
@@ -36,7 +48,7 @@ public class Movement : MonoBehaviour
         {
             var horizontalInput = Input.GetAxis("Horizontal");
             var verticalInput = Input.GetAxis("Vertical");
-            if (!runAudio.isPlaying && (Mathf.Abs(verticalInput) > 0 || Mathf.Abs(horizontalInput) > 0) && OnGround())
+            if (!runAudio.isPlaying && (Mathf.Abs(verticalInput) > 0 || Mathf.Abs(horizontalInput) > 0))
             {
                 runAudio.Play();
             }
@@ -52,13 +64,9 @@ public class Movement : MonoBehaviour
             movementVector = horizontalVector + verticalVector;
             movementVector.Normalize();
         }
-        if (view.IsMine && !noMovement)
-        {
-            DemoMove();
-        }
     }
 
-    private void DemoMove()
+    private void Move()
     {
         var lookDirection = Vector3.zero;
         if (movementVector.x != 0 || movementVector.z != 0)
@@ -68,7 +76,7 @@ public class Movement : MonoBehaviour
             if (lookDirection != Vector3.zero)
             {
                 var targetRotation = Quaternion.LookRotation(lookDirection);
-                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, targetRotation, turnAngle * Time
+                model.transform.rotation = Quaternion.Slerp(model.transform.rotation, targetRotation, turnSpeed * Time
                     .deltaTime);
             }
 
@@ -81,42 +89,67 @@ public class Movement : MonoBehaviour
                 facing = false;
             }
         }
-        
+
         if (facing)
         {
-            var moveDirection = movementVector;
-            moveDirection *= speed;
-            moveDirection.y = rb.velocity.y;
-            rb.velocity = moveDirection;
+            var targetVelocity = movementVector;
+            targetVelocity *= speed;
+            var currentVelocity = rb.velocity;
+            if (targetVelocity.magnitude < currentVelocity.magnitude)
+            {
+                targetVelocity = currentVelocity;
+                rb.velocity /= 1.1f;
+            }
+
+            var velocityDelta = targetVelocity - currentVelocity;
+            velocityDelta.x = Mathf.Clamp(velocityDelta.x, -maxVelocityDelta, maxVelocityDelta);
+            velocityDelta.z = Mathf.Clamp(velocityDelta.z, -maxVelocityDelta, maxVelocityDelta);
+            velocityDelta.y = 0;
+            if (!IsSlippery())
+            {
+                if (Mathf.Abs(rb.velocity.magnitude) < speed)
+                {
+                    rb.AddForce(velocityDelta, ForceMode.VelocityChange);
+                }
+            }
+            else if (Mathf.Abs(rb.velocity.magnitude) < speed)
+            {
+                rb.AddForce(velocityDelta * 0.01f, ForceMode.VelocityChange);
+            }
         }
-        else
-        {
-            var movement =  Vector3.zero;
-            movement.y = rb.velocity.y;
-            rb.velocity = movement;
-        }
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (OnGround())
             {
-                jumpAudio.Play();
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
-        
     }
-    
+
     private bool OnGround()
     {
         return Physics.Raycast(transform.position, Vector3.down, rayLength);
+    }
+
+    private bool IsSlippery()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayLength))
+        {
+            if (hit.transform.CompareTag("Slippery"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool GetMovementStatus()
     {
         return noMovement;
     }
-    
+
     public void SetMovementStatus(bool status)
     {
         noMovement = status;

@@ -1,11 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
-using Photon.Realtime;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
@@ -13,16 +9,17 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     private bool _isConnected;
     public bool joinedRoom;
     public bool loadedGame;
-    public TextMeshProUGUI master;
-    public TextMeshProUGUI roomcount;
-    public TextMeshProUGUI room;
-    public TextMeshProUGUI joined;
-    private string[] levels = new[] { "SlimeClimb", "BigFans", "DoorDash" };
-    
-    // Start is called before the first frame update
+    private readonly string[] _levels = new[] { "DoorDash", "BigFans", "SlimeClimb" };
+    [SerializeField] private Animator menuAnimator;
+    [SerializeField] private Animator canvasAnimator;
+    private static readonly int Jump = Animator.StringToHash("jump");
+    [SerializeField] private bool onQueue;
+    [SerializeField] private GameObject background;
+    [SerializeField] private Button playButton;
+    private static readonly int Queue1 = Animator.StringToHash("queue");
+
     void Start()
     {
-        Debug.Log("Connecting...");
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -30,50 +27,69 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     {
         _isConnected = true;
         PhotonNetwork.JoinLobby();
-        master.text = ("Connected to Master");
-        Debug.Log("Connected to Master");
     }
 
     public void QueueButton()
     {
         if (_isConnected && !joinedRoom)
         {
-            var roomCount = PhotonNetwork.CountOfRooms;
-            roomcount.text = ("There are " + roomCount + " available rooms");
-            Debug.Log("There are " + roomCount + " available rooms");
-            if (roomCount == 0)
-            {
-                room.text = ("No rooms, so creating a room");
-                Debug.Log("No rooms, so creating a room");
-                PhotonNetwork.CreateRoom(levels[Random.Range(0, levels.Length)]);
-            }
-            else
-            {
-                room.text = ("There is a room, joining to it.");
-                Debug.Log("There is a room, joining to it.");
-                PhotonNetwork.JoinRandomRoom();
-            }
+            menuAnimator.SetTrigger(Jump);
+            canvasAnimator.SetTrigger(Queue1);
+            StartCoroutine(QueueCoroutine());
+        }
+    }
+
+    private void Update()
+    {
+        if (onQueue)
+        {
+            var currentOffset = background.GetComponent<Renderer>().material.GetTextureOffset("_MainTex");
+            currentOffset.y += 2 * Time.deltaTime;
+            background.GetComponent<Renderer>().material.SetTextureOffset("_MainTex", currentOffset);
+        }
+        if (!loadedGame && joinedRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            loadedGame = true;
+            //PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.Name);
+            PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.Name);
         }
     }
 
     public override void OnJoinedLobby()
     {
-    }
-
-    private void Update()
-    {
-        if (!loadedGame && joinedRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
-        {
-            loadedGame = true;
-            //PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.Name);
-            PhotonNetwork.LoadLevel("BigFans");
-        }
+        playButton.interactable = true;
     }
 
     public override void OnJoinedRoom()
     {
-        joined.text = ("Joined a room");
-        Debug.Log("Joined a room");
         joinedRoom = true;
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    private IEnumerator QueueCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        onQueue = true;
+        yield return new WaitForSeconds(2);
+        var roomCount = PhotonNetwork.CountOfRooms;
+        Debug.Log("There are " + roomCount + " available rooms");
+        if (roomCount == 0)
+        {
+            Debug.Log("No rooms, so creating a room");
+            var random = Random.Range(0, _levels.Length);
+            Debug.Log(random);
+            PhotonNetwork.CreateRoom(roomName: _levels[random]);
+        }
+        else
+        {
+            Debug.Log("There is a room, joining to it.");
+            PhotonNetwork.JoinRandomRoom();
+        }
+
+        yield return null;
     }
 }

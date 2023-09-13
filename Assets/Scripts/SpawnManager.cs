@@ -1,13 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using ExitGames.Client.Photon;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using UnityEngine.Timeline;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -21,24 +14,23 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private Vector3 playerOneSpawnPosition;
     [SerializeField] private Vector3 playerTwoSpawnPosition;
     
-    
     private void Start()
     {
-        SpawnPlayers();
         if (SceneManager.GetActiveScene().name == "DoorDash")
         {
             DoorDashInitialize();
         }
         else if (SceneManager.GetActiveScene().name == "BigFans")
         {
-            BigsFansInitialize();
+            BigFansInitialize();
         }
         else if (SceneManager.GetActiveScene().name == "SlimeClimb")
         {
             SlimeInitialize();
         }
+        SpawnPlayers();
     }
-    
+
     private void SpawnPlayers()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -49,6 +41,7 @@ public class SpawnManager : MonoBehaviour
         {
             spawnPosition = playerTwoSpawnPosition;
         }
+
         var player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition, Quaternion.identity);
         if (SceneManager.GetActiveScene().name == "DoorDash")
         {
@@ -67,8 +60,8 @@ public class SpawnManager : MonoBehaviour
             SpawnDoor(fifthDoorRow);
         }
     }
-    
-    private void BigsFansInitialize()
+
+    private void BigFansInitialize()
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -91,6 +84,7 @@ public class SpawnManager : MonoBehaviour
                 randomNoTwo = randomNoOne - 1;
             }
         }
+
         for (var i = 0; i < arr.Length; i++)
         {
             if (i == randomNoOne || i == randomNoTwo)
@@ -99,7 +93,7 @@ public class SpawnManager : MonoBehaviour
             }
             else
             {
-                var door = PhotonNetwork.Instantiate("Door", arr[i], Quaternion.identity);
+                PhotonNetwork.Instantiate("Door", arr[i], Quaternion.identity);
             }
         }
     }
@@ -115,10 +109,12 @@ public class SpawnManager : MonoBehaviour
             PhotonNetwork.Instantiate("Cubes", Vector3.zero, Quaternion.identity);
         }
     }
+
     public void GoToMenu()
     {
-        PhotonNetwork.LoadLevel("Menu");
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LeaveLobby();
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel("Menu");
     }
 }

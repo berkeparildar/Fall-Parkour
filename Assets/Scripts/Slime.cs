@@ -7,7 +7,7 @@ using UnityEngine;
 public class Slime : MonoBehaviour
 {
     [SerializeField] private Vector3 targetPos;
-    
+    [SerializeField] private bool game;
     private void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
@@ -22,11 +22,15 @@ public class Slime : MonoBehaviour
     {
         targetPos = transform.position;
         targetPos.y += 300;
+        game = true;
     }
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPos,  Time.deltaTime);
+        if (game)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos,  Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,5 +42,13 @@ public class Slime : MonoBehaviour
         eventOptions.Receivers = ReceiverGroup.All;
         SendOptions sendOptions = SendOptions.SendReliable;
         PhotonNetwork.RaiseEvent(eventCode, other.GetComponent<PhotonView>().ViewID, eventOptions, sendOptions);
+        GetComponent<BoxCollider>().enabled = false;
+    }
+
+    public void StopSlime()
+    {
+        game = false;
+        targetPos = transform.position;
+        
     }
 }
