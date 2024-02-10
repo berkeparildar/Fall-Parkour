@@ -9,9 +9,9 @@
   "titleTwo": "Maps",
   "partTwo": "~Door Dash~_Navigate through rows of doors._Hit the doors to pass through and reach the finish line._In each row, there are two fake doors that cannot be opened._Find the real doors to progress._Each row has fewer doors, making it harder to find the correct path._The first player to reach the finish line wins the game._~Big Fans~_Pass through a series of spinning fans._Jump from fan to fan to progress._Time your jumps perfectly to avoid falling._In the later stages, watch out for fans with rotating sticks that can push you off._This level also features a checkpoint system._If you fall, you'll respawn at the last checkpoint._The first player to reach the finish line wins the game._~Slime Climb~_Ascend a platform filled with obstacles to reach the top._Avoid the rising slime below; contact with it means defeat._Navigate through rotating hammers, slippery floors, pendulum balls, and moving cube obstacles._Be agile and precise to dodge obstacles and stay ahead of the slime._The first player to reach the finish line wins the game.",
   "videoId": "https://www.youtube.com/embed/jMtXLuWaQ-k",
-  "imageOnePath": "assets/pictures/fallparkour/1.gif",
-  "imageTwoPath": "assets/pictures/fallparkour/2.gif",
-  "imageThreePath": "assets/pictures/fallparkour/3.gif",
+  "imageOnePath": "assets/pictures/1.gif",
+  "imageTwoPath": "assets/pictures/2.gif",
+  "imageThreePath": "assets/pictures/3.gif",
   "hasVideo": true,
   "hasStore": false,
   "storeUrl": "",
@@ -23,8 +23,8 @@
     "Multiplayer"
   ],
   "isPortait": false,
-  "thumbnailOnePath": "assets/pictures/fallparkour/th1.jpg",
-  "thumbnailTwoPath": "assets/pictures/p/th2.jpg",
-  "thumbnailThreePath": "assets/pictures/p/th3.jpg",
+  "thumbnailOnePath": "assets/pictures/th1.jpg",
+  "thumbnailTwoPath": "assets/pictures/th1.jpg",
+  "thumbnailThreePath": "assets/pictures/th1.jpg",
   "thumbnailString": "Fall Parkour is a multiplayer desktop game inspired by the popular game Fall Guys. Two players compete in a series of challenging race maps, with the goal of reaching the finish line before their opponent."
 }
